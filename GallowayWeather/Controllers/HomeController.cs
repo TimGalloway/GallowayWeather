@@ -22,7 +22,7 @@ namespace GallowayWeather.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Galloway Consulting";
 
             return View();
         }
