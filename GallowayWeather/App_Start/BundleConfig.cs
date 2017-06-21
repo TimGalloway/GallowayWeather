@@ -26,6 +26,10 @@ namespace GallowayWeather
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            // Custom script bundle
+            bundles.Add(new ScriptBundle("~/bundles/GallowayWeather").Include(
+                "~/Scripts/GallowayWeather.js"));
         }
     }
 }
