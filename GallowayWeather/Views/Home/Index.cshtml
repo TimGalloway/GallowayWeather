@@ -1,9 +1,20 @@
-﻿@{
+﻿@model  GallowayWeather.ViewModels.WeatherViewModel
+@{
     ViewBag.Title = "GallowayWeather";
 }
 
 <div>
     <h1>GallowayWeather</h1>
-    <input id="searchtext" type="text" size="50" /><input id="btnFindLocation" type="button" value="Search" /><br />
-    <textarea id="results"></textarea>
+    <input id="searchtext" type="text" size="50" />
+    <br />
+    @using (Html.BeginForm())
+    {
+        @Html.DropDownList("lstResults", new List<SelectListItem>{
+                    new SelectListItem{ Text="Perth", Value = "26797" }}
+        )
+        <input id="btnGetWeather" type="submit" value="Get Weather" />
+    }
+    <div><img src="/Images/Icons/@Model.WeatherIcon"</div>
+    <div>@Model.WeatherText</div>
+
 </div>
