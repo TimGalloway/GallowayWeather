@@ -33,9 +33,11 @@ namespace GallowayWeather.Controllers
 
                 rootObject = JsonConvert.DeserializeObject<List<RootObject>>(json);
             }
+            RootObject currConditions = rootObject[0];
 
-            weatherViewModel.WeatherIcon = rootObject[0].WeatherIcon + "-s.png";
-            weatherViewModel.WeatherText = rootObject[0].WeatherText;
+            weatherViewModel.WeatherIcon = "/Images/Icons/" + currConditions.WeatherIcon.ToString("D2") + "-s.png";
+            weatherViewModel.WeatherText = currConditions.WeatherText;
+            weatherViewModel.WeatherTemp = currConditions.Temperature.Metric.Value.ToString() + currConditions.Temperature.Metric.Unit;
 
             return View(weatherViewModel);
         }
