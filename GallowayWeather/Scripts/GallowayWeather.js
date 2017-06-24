@@ -4,7 +4,35 @@
     //});
 
     $('#spinner').hide(); 
-
+    $('#searchtext').autocomplete({
+        minLength: 4,
+        delay: 1000,
+        source: function (request, response) {
+            $('#spinner').show(); 
+            $.ajax({
+                url: "http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=URhjqAbLAibbb6EEnwzYSp9OzkKGp6jF",
+                dataType: 'json',
+                data: { q: request.term },
+                success: function (data) {
+                    var out = "";
+                    $(data).each(function (i, val) {
+                        out = out + val.LocalizedName;
+                    });
+                    response(out);
+                    $('#spinner').hide();
+                },
+                error: function (data) {
+                    $('#spinner').hide();
+                }
+            }); 
+        },
+        open: function () {
+            $(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+        },
+        close: function () {
+            $(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+        } 
+    });
 
 
  });
