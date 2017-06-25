@@ -5,11 +5,15 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using static GallowayWeather.CurrentConditon;
 using System.Collections.Generic;
+using GallowayWeather.Models;
+using GallowayWeather.DAL;
 
 namespace GallowayWeather.Controllers
 {
     public class HomeController : Controller
     {
+        private WeatherContext db = new WeatherContext();
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -38,6 +42,16 @@ namespace GallowayWeather.Controllers
             weatherViewModel.WeatherIcon = "/Images/Icons/" + currConditions.WeatherIcon.ToString("D2") + "-s.png";
             weatherViewModel.WeatherText = currConditions.WeatherText;
             weatherViewModel.WeatherTemp = currConditions.Temperature.Metric.Value.ToString() + currConditions.Temperature.Metric.Unit;
+
+            var weatherHistory = new WeatherHistory();
+            weatherHistory.DateCreated = DateTime.Now;
+            weatherHistory.Icon = currConditions.WeatherIcon;
+            weatherHistory.Location = lstResults;
+            weatherHistory.Temp = currConditions.Temperature.Metric.Value.ToString() + currConditions.Temperature.Metric.Unit;
+            weatherHistory.Text = currConditions.WeatherText;
+
+            db.WeatherHistorys.Add(weatherHistory);
+            db.SaveChanges();
 
             return View(weatherViewModel);
         }
