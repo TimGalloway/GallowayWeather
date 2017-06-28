@@ -146,14 +146,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="CurrentConditionDetailed.cs" />
     <Compile Include="CurrentConditon.cs" />
-    <Compile Include="DAL\WeatherContext.cs" />
-    <Compile Include="DAL\WeatherInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\WeatherHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\WeatherViewModel.cs" />
   </ItemGroup>
@@ -310,6 +305,16 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GallowayWeather.Core\GallowayWeather.Core.csproj">
+      <Project>{819330c8-c5a3-47a8-bea6-470d766bfbde}</Project>
+      <Name>GallowayWeather.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GallowayWeather.Infrastructure\GallowayWeather.Infrastructure.csproj">
+      <Project>{5cbc4bec-d5c1-44ad-b4e0-bc88ba89a659}</Project>
+      <Name>GallowayWeather.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

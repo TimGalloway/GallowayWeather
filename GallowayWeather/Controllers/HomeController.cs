@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using static GallowayWeather.CurrentConditon;
 using System.Collections.Generic;
-using GallowayWeather.Models;
-using GallowayWeather.DAL;
+using GallowayWeather.Infrastructure;
+using GallowayWeather.Core.Models;
 
 namespace GallowayWeather.Controllers
 {
     public class HomeController : Controller
     {
-        private WeatherContext db = new WeatherContext();
+        private GallowayWeatherRepository db = new GallowayWeatherRepository();
 
         [HttpGet]
         public ActionResult Index()
@@ -43,6 +43,7 @@ namespace GallowayWeather.Controllers
             weatherViewModel.WeatherText = currConditions.WeatherText;
             weatherViewModel.WeatherTemp = currConditions.Temperature.Metric.Value.ToString() + currConditions.Temperature.Metric.Unit;
 
+
             var weatherHistory = new WeatherHistory();
             weatherHistory.DateCreated = DateTime.Now;
             weatherHistory.Icon = currConditions.WeatherIcon;
@@ -50,8 +51,7 @@ namespace GallowayWeather.Controllers
             weatherHistory.Temp = currConditions.Temperature.Metric.Value.ToString() + currConditions.Temperature.Metric.Unit;
             weatherHistory.Text = currConditions.WeatherText;
 
-            db.WeatherHistorys.Add(weatherHistory);
-            db.SaveChanges();
+            db.Add(weatherHistory);
 
             return View(weatherViewModel);
         }
