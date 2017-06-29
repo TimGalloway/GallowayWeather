@@ -1,20 +1,18 @@
-namespace GallowayWeather.Migrations
+namespace GallowayWeather.Infrastructure.Migrations
 {
-    using GallowayWeather.Models;
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<GallowayWeather.DAL.WeatherContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<GallowayWeather.Infrastructure.WeatherContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(GallowayWeather.DAL.WeatherContext context)
+        protected override void Seed(GallowayWeather.Infrastructure.WeatherContext context)
         {
             //  This method will be called after migrating to the latest version.
 
@@ -28,8 +26,6 @@ namespace GallowayWeather.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-
-            context.WeatherHistorys.Add(new WeatherHistory { Location = "Perth", Icon = 1, Temp = "20", Text = "Sunny" });
         }
     }
 }
