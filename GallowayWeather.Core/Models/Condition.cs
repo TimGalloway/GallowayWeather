@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace GallowayWeather
+﻿namespace GallowayWeather.Core.Models
 {
-    public class CurrentConditon
+    public class Condition
     {
 
         public class Metric
@@ -28,7 +23,7 @@ namespace GallowayWeather
             public Imperial Imperial { get; set; }
         }
 
-        public class RootObject
+        public class SimpleCondition
         {
             public string LocalObservationDateTime { get; set; }
             public int EpochTime { get; set; }

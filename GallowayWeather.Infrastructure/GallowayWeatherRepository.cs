@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GallowayWeather.Core.Models;
-using System.Collections;
-using System.Data;
+using System.Net.Http;
+using Newtonsoft.Json;
+using static GallowayWeather.Core.Models.Condition;
 
 namespace GallowayWeather.Infrastructure
 {
@@ -33,6 +32,21 @@ namespace GallowayWeather.Infrastructure
         public WeatherHistory FindById(int Id)
         {
             throw new NotImplementedException();
+        }
+
+        public async System.Threading.Tasks.Task<SimpleCondition> GetCurrentAsync(string locationId)
+        {
+            var url = "http://dataservice.accuweather.com/currentconditions/v1/" + locationId + "?apikey=URhjqAbLAibbb6EEnwzYSp9OzkKGp6jF";
+            List<SimpleCondition> rootObject = new List<SimpleCondition>();
+            using (var httpClient = new HttpClient())
+            {
+                var json = await httpClient.GetStringAsync(url);
+
+                rootObject = JsonConvert.DeserializeObject<List<SimpleCondition>>(json);
+            }
+            SimpleCondition currConditions = rootObject[0];
+
+            return currConditions;
         }
 
         public IEnumerable<WeatherHistory> GetWeatherHistory()

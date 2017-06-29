@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace GallowayWeather
+namespace GallowayWeather.Core.Models
 {
     public class CurrentConditionDetailed
     {
@@ -628,7 +628,7 @@ namespace GallowayWeather
             public Past24HourRange Past24HourRange { get; set; }
         }
 
-        public class RootObject
+        public class CurrentConditionDetail
         {
             public string LocalObservationDateTime { get; set; }
             public int EpochTime { get; set; }

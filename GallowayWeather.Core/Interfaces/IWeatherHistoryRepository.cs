@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using static GallowayWeather.Core.Models.Condition;
 
 namespace GallowayWeather.Core.Interfaces
 {
@@ -12,5 +13,7 @@ namespace GallowayWeather.Core.Interfaces
         void Remove(int Id);
         IEnumerable <WeatherHistory> GetWeatherHistory();
         WeatherHistory FindById(int Id);
+        //CurrentConditon GetCurrentAsync(string locationId);
+        System.Threading.Tasks.Task<SimpleCondition> GetCurrentAsync(string locationId);
     }
 }
