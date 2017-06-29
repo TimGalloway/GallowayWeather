@@ -257,6 +257,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Documentation\Libraries and Tools Used.docx" />
     <Content Include="Documentation\Requirements.docx" />
+    <Content Include="Documentation\Assumptions.docx" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
