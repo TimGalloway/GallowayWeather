@@ -7,6 +7,8 @@ namespace GallowayWeather.ViewModels
 {
     public class WeatherViewModel
     {
+        public string WeatherLocation { get; set; }
+
         public string WeatherIcon { get; set; }
 
         public string WeatherText { get; set; }

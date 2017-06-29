@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Web.Mvc;
 using GallowayWeather.ViewModels;
-using Newtonsoft.Json;
-using System.Net.Http;
-using static GallowayWeather.CurrentConditon;
-using System.Collections.Generic;
-using GallowayWeather.Models;
-using GallowayWeather.DAL;
+using GallowayWeather.Infrastructure;
+using GallowayWeather.Core.Models;
+using static GallowayWeather.Core.Models.Condition;
+using static GallowayWeather.Core.Models.Location;
 
 namespace GallowayWeather.Controllers
 {
     public class HomeController : Controller
     {
-        private WeatherContext db = new WeatherContext();
+        private GallowayWeatherRepository db = new GallowayWeatherRepository();
 
         [HttpGet]
         public ActionResult Index()
@@ -23,35 +21,35 @@ namespace GallowayWeather.Controllers
         }
 
         [HttpPost]
-        public async System.Threading.Tasks.Task<ActionResult> Index(String lstResults)
+        public async System.Threading.Tasks.Task<ActionResult> Index(String lstResults, string lstUnitType)
         {
             WeatherViewModel weatherViewModel = new WeatherViewModel();
+            WeatherHistory weatherHistory = new WeatherHistory();
 
-            //Populate the viewmodel, this needs to be a JSON call to the webservice 
+            SimpleLocation currLocation = await db.GetLocationAsync(lstResults);
+            SimpleCondition currCondition = await db.GetCurrentAsync(lstResults);
 
-            var url = "http://dataservice.accuweather.com/currentconditions/v1/" + lstResults + "?apikey=URhjqAbLAibbb6EEnwzYSp9OzkKGp6jF";
-            List<RootObject> rootObject = new List<RootObject>();
-            using (var httpClient = new HttpClient())
+            weatherViewModel.WeatherLocation = currLocation.EnglishName + ", " + currLocation.Country.EnglishName;
+            weatherViewModel.WeatherIcon = "/Images/Icons/" + currCondition.WeatherIcon.ToString("D2") + "-s.png";
+            weatherViewModel.WeatherText = currCondition.WeatherText;
+            if (lstUnitType == "Metric")
             {
-                var json = await httpClient.GetStringAsync(url);
-
-                rootObject = JsonConvert.DeserializeObject<List<RootObject>>(json);
+                weatherViewModel.WeatherTemp = currCondition.Temperature.Metric.Value.ToString() + currCondition.Temperature.Metric.Unit;
+                weatherHistory.Temp = currCondition.Temperature.Metric.Value.ToString() + currCondition.Temperature.Metric.Unit;
             }
-            RootObject currConditions = rootObject[0];
+            else
+            {
+                weatherViewModel.WeatherTemp = currCondition.Temperature.Imperial.Value.ToString() + currCondition.Temperature.Imperial.Unit;
+                weatherHistory.Temp = currCondition.Temperature.Imperial.Value.ToString() + currCondition.Temperature.Imperial.Unit;
+            }
 
-            weatherViewModel.WeatherIcon = "/Images/Icons/" + currConditions.WeatherIcon.ToString("D2") + "-s.png";
-            weatherViewModel.WeatherText = currConditions.WeatherText;
-            weatherViewModel.WeatherTemp = currConditions.Temperature.Metric.Value.ToString() + currConditions.Temperature.Metric.Unit;
-
-            var weatherHistory = new WeatherHistory();
             weatherHistory.DateCreated = DateTime.Now;
-            weatherHistory.Icon = currConditions.WeatherIcon;
+            weatherHistory.Icon = currCondition.WeatherIcon;
             weatherHistory.Location = lstResults;
-            weatherHistory.Temp = currConditions.Temperature.Metric.Value.ToString() + currConditions.Temperature.Metric.Unit;
-            weatherHistory.Text = currConditions.WeatherText;
+            weatherHistory.Text = currCondition.WeatherText;
+            weatherHistory.LocationText = currLocation.EnglishName + ", " + currLocation.Country.EnglishName;
 
-            db.WeatherHistorys.Add(weatherHistory);
-            db.SaveChanges();
+            db.Add(weatherHistory);
 
             return View(weatherViewModel);
         }
