@@ -45,6 +45,7 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CurrentConditionDetailed.cs" />
     <Compile Include="Models\Condition.cs" />
+    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\WeatherHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -7,6 +7,7 @@ namespace GallowayWeather.Core.Models
         [Required]
         public int ID { get; set; }
         public string Location { get; set; }
+        public string LocationText { get; set; }
         public string Temp { get; set; }
         public string Text { get; set; }
         public int Icon { get; set; }
