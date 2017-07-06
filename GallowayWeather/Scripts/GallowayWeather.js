@@ -10,9 +10,9 @@ function getAutoCompleteValues(val) {
     $("#spinner").show();
     $.ajax({
         type: "GET",
-        dataType: "jsonp",
-        jsonp: "callback", jsonpCallback: "callback",
-        url: "http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=URhjqAbLAibbb6EEnwzYSp9OzkKGp6jF&q=" + val,
+        dataType: "json",
+        jsonpCallback: "callback",
+        url: "/home/AutoCompleteAsync?searchText=" + val,
         cache: false,
         success: function (data) {
             $("#lstResults").html('');
