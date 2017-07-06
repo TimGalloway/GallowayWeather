@@ -16,10 +16,12 @@ namespace GallowayWeather.Infrastructure
     {
         WeatherContext context = new WeatherContext();
 
-        public void Add(WeatherHistory h)
+        public Boolean Add(WeatherHistory h)
         {
             context.WeatherHistorys.Add(h);
             context.SaveChanges();
+
+            return true;
         }
 
         public void Dispose()
@@ -30,6 +32,11 @@ namespace GallowayWeather.Infrastructure
         public void Edit(WeatherHistory h)
         {
             throw new NotImplementedException();
+        }
+
+        public IList<WeatherHistory> FindAll()
+        {
+            return context.WeatherHistorys.ToList();
         }
 
         public WeatherHistory FindById(int Id)
