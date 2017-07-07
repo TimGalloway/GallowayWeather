@@ -20,6 +20,11 @@ function getAutoCompleteValues(val) {
                 $("#lstResults").append('<option value="' + item.Key + '">' + item.LocalizedName + ', ' + item.Country.LocalizedName + '</option>');
             });
             $("#spinner").hide();
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+            $("#spinner").hide();
         }
     });
 }

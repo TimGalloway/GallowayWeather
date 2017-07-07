@@ -18,8 +18,12 @@ namespace GallowayWeather.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            WeatherViewModel weatherViewModel = new WeatherViewModel();
-            weatherViewModel.WeatherResults = new List<WeatherHistory>();
+            WeatherViewModel weatherViewModel = new WeatherViewModel()
+            {
+                WeatherResults = new List<WeatherHistory>()
+            };
+
+            weatherViewModel.WeatherResults = db.GetWeatherHistory().OrderBy(a => a.DateCreated).ToList();
 
             return View(weatherViewModel);
         }
@@ -27,38 +31,34 @@ namespace GallowayWeather.Controllers
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> Index(String lstResults, string lstUnitType)
         {
-            WeatherViewModel weatherViewModel = new WeatherViewModel();
-            WeatherHistory weatherResult = new WeatherHistory();
-            WeatherHistory weatherHistory = new WeatherHistory();
-
-            weatherViewModel.WeatherResults = new List<WeatherHistory>();
-            weatherViewModel.WeatherResults = db.GetWeatherHistory().OrderBy(a => a.DateCreated).ToList();
+            WeatherViewModel weatherViewModel = new WeatherViewModel() {
+                WeatherResults = new List<WeatherHistory>()
+            };
 
             SimpleLocation currLocation = await db.GetLocationAsync(lstResults);
             SimpleCondition currCondition = await db.GetCurrentAsync(lstResults);
 
-            weatherResult.Location = currLocation.EnglishName + ", " + currLocation.Country.EnglishName;
-            weatherResult.Icon = currCondition.WeatherIcon.ToString();
-            weatherResult.Text = currCondition.WeatherText;
+            WeatherHistory weatherHistory = new WeatherHistory()
+            {
+                DateCreated = DateTime.Now,
+                Icon = currCondition.WeatherIcon.ToString("00"),
+                Location = lstResults,
+                Text = currCondition.WeatherText,
+                LocationText = currLocation.EnglishName + ", " + currLocation.Country.EnglishName
+            };
+
             if (lstUnitType == "Metric")
             {
-                weatherResult.Temp = currCondition.Temperature.Metric.Value.ToString() + currCondition.Temperature.Metric.Unit;
                 weatherHistory.Temp = currCondition.Temperature.Metric.Value.ToString() + currCondition.Temperature.Metric.Unit;
             }
             else
             {
-                weatherResult.Temp = currCondition.Temperature.Imperial.Value.ToString() + currCondition.Temperature.Imperial.Unit;
                 weatherHistory.Temp = currCondition.Temperature.Imperial.Value.ToString() + currCondition.Temperature.Imperial.Unit;
             }
-            weatherViewModel.WeatherResults.Add(weatherResult);
-
-            weatherHistory.DateCreated = DateTime.Now;
-            weatherHistory.Icon = currCondition.WeatherIcon.ToString();
-            weatherHistory.Location = lstResults;
-            weatherHistory.Text = currCondition.WeatherText;
-            weatherHistory.LocationText = currLocation.EnglishName + ", " + currLocation.Country.EnglishName;
 
             db.Add(weatherHistory);
+
+            weatherViewModel.WeatherResults = db.GetWeatherHistory().OrderBy(a => a.DateCreated).ToList();
 
             return View(weatherViewModel);
         }

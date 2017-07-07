@@ -19,7 +19,6 @@ namespace GallowayWeather.Infrastructure
 
         public void Add(WeatherHistory h)
         {
-            h.Icon = String.Format("00", h.Icon);
             context.WeatherHistorys.Add(h);
             context.SaveChanges();
         }
