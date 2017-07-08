@@ -1,18 +1,10 @@
-﻿using System;
+﻿using GallowayWeather.Core.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace GallowayWeather.ViewModels
 {
     public class WeatherViewModel
     {
-        public string WeatherLocation { get; set; }
-
-        public string WeatherIcon { get; set; }
-
-        public string WeatherText { get; set; }
-
-        public string WeatherTemp { get; set; }
+        public IList<WeatherHistory> WeatherResults { get; set; }
     }
 }
