@@ -30,6 +30,7 @@
     @foreach (var item in Model.WeatherResults)
     {
         <li>
+            @item.LocalObservationDateTime<br />
             @item.LocationText<br />
             <img src=/Images/Icons/@item.Icon-s.png /><br />
             @item.Text<br />

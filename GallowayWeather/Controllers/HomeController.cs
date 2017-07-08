@@ -44,7 +44,8 @@ namespace GallowayWeather.Controllers
                 Icon = currCondition.WeatherIcon.ToString("00"),
                 Location = lstResults,
                 Text = currCondition.WeatherText,
-                LocationText = currLocation.EnglishName + ", " + currLocation.Country.EnglishName
+                LocationText = currLocation.EnglishName + ", " + currLocation.Country.EnglishName,
+                LocalObservationDateTime = currCondition.LocalObservationDateTime
             };
 
             if (lstUnitType == "Metric")

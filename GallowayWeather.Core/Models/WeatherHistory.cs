@@ -11,5 +11,6 @@ namespace GallowayWeather.Core.Models
         public string Temp { get; set; }
         public string Text { get; set; }
         public string Icon { get; set; }
+        public string LocalObservationDateTime { get; set; }
     }
 }
