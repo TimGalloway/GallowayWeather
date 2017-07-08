@@ -10,6 +10,7 @@ namespace GallowayWeather.Core.Models
         public string LocationText { get; set; }
         public string Temp { get; set; }
         public string Text { get; set; }
-        public int Icon { get; set; }
+        public string Icon { get; set; }
+        public string LocalObservationDateTime { get; set; }
     }
 }

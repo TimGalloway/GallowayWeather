@@ -7,7 +7,7 @@ namespace GallowayWeather.Infrastructure
     {
         protected override void Seed(WeatherContext context)
         {
-            context.WeatherHistorys.Add(new WeatherHistory { Location = "Perth", Icon = 1, Temp = "20", Text = "Sunny" });
+            context.WeatherHistorys.Add(new WeatherHistory { Location = "Perth", Icon = "1", Temp = "20", Text = "Sunny" });
         }
     }
 }

@@ -2,7 +2,12 @@
 @{
     ViewBag.Title = "GallowayWeather";
 }
-
+<style>
+    ul li {
+        display: inline-block;
+        border: 1px solid black;
+    }
+</style>
 <div>
     <h1>GallowayWeather</h1>
     @using (Html.BeginForm())
@@ -21,8 +26,17 @@
         </fieldset>
     }
     <br />
-    <div>@Model.WeatherLocation</div>
-    <div><img src="@Model.WeatherIcon" /></div>
-    <div>@Model.WeatherText</div>
-    <div>@Model.WeatherTemp</div>
+    <ul>
+    @foreach (var item in Model.WeatherResults)
+    {
+        <li>
+            @item.LocalObservationDateTime<br />
+            @item.LocationText<br />
+            <img src=/Images/Icons/@item.Icon-s.png /><br />
+            @item.Text<br />
+            @item.Temp<br />
+            @item.DateCreated<br />
+        </li>
+    }
+    </ul>
 </div>

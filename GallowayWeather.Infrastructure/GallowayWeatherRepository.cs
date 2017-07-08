@@ -9,6 +9,7 @@ using static GallowayWeather.Core.Models.Condition;
 using System.Threading.Tasks;
 using static GallowayWeather.Core.Models.Location;
 using System.Configuration;
+using static GallowayWeather.Core.Models.AutoComplete;
 
 namespace GallowayWeather.Infrastructure
 {
@@ -35,6 +36,18 @@ namespace GallowayWeather.Infrastructure
         public WeatherHistory FindById(int Id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IList<SimpleAutoComplete>> GetAutoCompleteAsync(string searchString)
+        {
+            var url = "http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" + ConfigurationManager.AppSettings["apiKey"] + "&q=" + searchString;
+            List<SimpleAutoComplete> rootObject = new List<SimpleAutoComplete>();
+            using (var httpClient = new HttpClient())
+            {
+                var json = await httpClient.GetStringAsync(url);
+                rootObject = JsonConvert.DeserializeObject<List<SimpleAutoComplete>>(json);
+            }
+            return rootObject;
         }
 
         public async Task<SimpleCondition> GetCurrentAsync(string locationId)
@@ -67,7 +80,7 @@ namespace GallowayWeather.Infrastructure
             return currLocations;
         }
 
-        public IEnumerable<WeatherHistory> GetWeatherHistory()
+        public IList<WeatherHistory> GetWeatherHistory()
         {
             return context.WeatherHistorys.ToList();
         }

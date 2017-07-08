@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IWeatherHistoryRepository.cs" />
+    <Compile Include="Models\AutoComplete.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CurrentConditionDetailed.cs" />
     <Compile Include="Models\Condition.cs" />
