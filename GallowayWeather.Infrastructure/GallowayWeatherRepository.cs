@@ -57,32 +57,34 @@ namespace GallowayWeather.Infrastructure
             return rootObject;
         }
 
-        public async Task<SimpleCondition> GetCurrentAsync(string locationId)
+        public async Task<ExtendedCondition> GetCurrentAsync(string locationId)
         {
             var url = "http://dataservice.accuweather.com/currentconditions/v1/" + locationId + "?apikey=" + ConfigurationManager.AppSettings["apiKey"]; 
-            List<SimpleCondition> rootObject = new List<SimpleCondition>();
+            List<ExtendedCondition> rootObject = new List<ExtendedCondition>();
             using (var httpClient = new HttpClient())
             {
                 var json = await httpClient.GetStringAsync(url);
 
-                rootObject = JsonConvert.DeserializeObject<List<SimpleCondition>>(json);
+                rootObject = JsonConvert.DeserializeObject<List<ExtendedCondition>>(json);
             }
-            SimpleCondition currConditions = rootObject[0];
+            ExtendedCondition currConditions = rootObject[0];
+            currConditions.ConditionID = locationId;
 
             return currConditions;
         }
 
-        public async Task<Location.SimpleLocation> GetLocationAsync(string locationId)
+        public async Task<Location.ExtendedLocation> GetLocationAsync(string locationId)
         {
             var url = "http://dataservice.accuweather.com/locations/v1/" + locationId + "?apikey=" + ConfigurationManager.AppSettings["apiKey"];
-            SimpleLocation rootObject = new SimpleLocation();
+            ExtendedLocation rootObject = new ExtendedLocation();
             using (var httpClient = new HttpClient())
             {
                 var json = await httpClient.GetStringAsync(url);
 
-                rootObject = JsonConvert.DeserializeObject<SimpleLocation>(json);
+                rootObject = JsonConvert.DeserializeObject<ExtendedLocation>(json);
             }
-            SimpleLocation currLocations = rootObject;
+            ExtendedLocation currLocations = rootObject;
+            currLocations.LocationID = locationId;
 
             return currLocations;
         }

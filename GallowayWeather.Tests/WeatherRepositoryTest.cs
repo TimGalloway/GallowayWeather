@@ -8,58 +8,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static GallowayWeather.Core.Models.Condition;
+using static GallowayWeather.Core.Models.Location;
 
 namespace GallowayWeather.Tests
 {
     [TestClass]
     public class WeatherRepositoryTest
     {
-        [TestMethod]
-        public void CanGetConditions()
+        public WeatherRepositoryTest()
         {
-            Condition.SimpleCondition condition = new Condition.SimpleCondition()
+            Condition.ExtendedCondition condition = new Condition.ExtendedCondition()
             {
-                LocalObservationDateTime = DateTime.Now.ToString(),
-                EpochTime = 333,
-                WeatherText = "Testing Sunny",
-                WeatherIcon = 22,
-                IsDayTime = true,
-                Temperature = new Condition.Temperature()
-                {
-                    Metric = new Condition.Metric() { Value = 10 },
-                    Imperial = new Condition.Imperial() { Value = 4 }
-                },
-                MobileLink = "123",
-                Link = "ABC"
+                ConditionID = "1",
+                    LocalObservationDateTime = DateTime.Now.ToString(),
+                    EpochTime = 333,
+                    WeatherText = "Testing Sunny",
+                    WeatherIcon = 22,
+                    IsDayTime = true,
+                    Temperature = new Condition.Temperature()
+                    {
+                        Metric = new Condition.Metric() { Value = 10 },
+                        Imperial = new Condition.Imperial() { Value = 4 }
+                    },
+                    MobileLink = "123",
+                    Link = "ABC"
             };
-
-            Mock<IWeatherHistoryRepository> mockHistoryRepository = new Mock<IWeatherHistoryRepository>();
-
-
-        }
-
-        [TestMethod]
-        public void CanGetLocation()
-        { 
-            Location.SimpleLocation location = new Location.SimpleLocation()
+            Location.ExtendedLocation location = new Location.ExtendedLocation()
             {
+                LocationID = "100",
                 Version = 1,
                 Key = "1",
-                Type= "A",
+                Type = "A",
                 Rank = 10,
                 LocalizedName = "TestPlace",
                 EnglishName = "Test Place",
                 PrimaryPostalCode = "0000",
-                Region = new Location.Region() {
+                Region = new Location.Region()
+                {
                     EnglishName = "Test Region",
                     ID = "1",
                     LocalizedName = "Test Region"
                 },
                 Country = new Location.Country()
                 {
-                     EnglishName="Test Country",
-                     LocalizedName = "Test Country",
-                     ID = "1"
+                    EnglishName = "Test Country",
+                    LocalizedName = "Test Country",
+                    ID = "1"
                 },
                 AdministrativeArea = new Location.AdministrativeArea()
                 {
@@ -101,35 +96,80 @@ namespace GallowayWeather.Tests
                     new Location.SupplementalAdminArea(){Level = 2, EnglishName = "Test2", LocalizedName = "Test2"}
                 }
             };
+            IList<WeatherHistory> weatherHistories = new List<WeatherHistory>()
+            {
+                new WeatherHistory{
+                    Icon = "33",
+                    Location = "99",
+                    LocationText = "TestLocation",
+                    Temp = "3",
+                    Text = "Sunny",
+                    DateCreated = new DateTime(),
+                    LocalObservationDateTime="10/02/2017 12:00pm",
+                    ID=10
+                },
+                new WeatherHistory{
+                    Icon = "33",
+                    Location = "99",
+                    LocationText = "TestLocation",
+                    Temp = "3",
+                    Text = "Sunny",
+                    DateCreated = new DateTime(),
+                    LocalObservationDateTime="10/02/2017 12:00pm",
+                    ID=11
+                },
+                new WeatherHistory{
+                    Icon = "33",
+                    Location = "99",
+                    LocationText = "TestLocation",
+                    Temp = "3",
+                    Text = "Sunny",
+                    DateCreated = new DateTime(),
+                    LocalObservationDateTime="10/02/2017 12:00pm",
+                    ID=12
+                }
+            };
+            Mock<IWeatherHistoryRepository> mockHistoryRepository = new Mock<IWeatherHistoryRepository>();
+            mockHistoryRepository.Setup(mr => mr.FindAll()).Returns(weatherHistories);
+            mockHistoryRepository.Setup(mr => mr.GetCurrentAsync("1")).Returns(Task.FromResult(condition));
+            mockHistoryRepository.Setup(mr => mr.GetLocationAsync("100")).Returns(Task.FromResult(location));
+            this.MockWeatherRepository = mockHistoryRepository.Object;
+        }
+
+        public TestContext TestContext { get; set; }
+        public readonly IWeatherHistoryRepository MockWeatherRepository;
+
+        [TestMethod]
+        public async Task CanGetConditionsAsync()
+        {
+            Condition.ExtendedCondition testCondition = await MockWeatherRepository.GetCurrentAsync("1");
+
+            Assert.IsNotNull(testCondition);
+            Assert.IsInstanceOfType(testCondition, typeof(ExtendedCondition));
+            Assert.AreEqual("ABC", testCondition.Link);
+        }
+
+        [TestMethod]
+        public async Task CanGetLocation()
+        {
+            Location.SimpleLocation testLocation = await MockWeatherRepository.GetLocationAsync("100");
+
+            Assert.IsNotNull(testLocation);
+            Assert.IsInstanceOfType(testLocation, typeof(ExtendedLocation));
+            Assert.AreEqual("Test Place", testLocation.EnglishName);
         }
 
         ///<summary>
         /// Can we return all products?
         ///</summary>
         [TestMethod]
-        public void CanReturnAllProducts()
+        public void CanReturnAllWeatherHistorys()
         {
-            IList<WeatherHistory> weatherHistories = new List<WeatherHistory>()
-            {
-                new WeatherHistory{
-                    Icon = 33,
-                    Location = "99",
-                    LocationText = "TestLocation",
-                    Temp = "3",
-                    Text = "Sunny",
-                    DateCreated = new DateTime() }
-            };
+            // Try finding all Weather Histories
+            IList<WeatherHistory> testHistories = MockWeatherRepository.FindAll();
 
-            // Mock the Products Repository using Moq
-            Mock<IWeatherHistoryRepository> mockHistoryRepository = new Mock<IWeatherHistoryRepository>();
-
-            // Return all the products
-            mockHistoryRepository.Setup(mr => mr.FindAll()).Returns(weatherHistories);
-
-            //List<WeatherHistory> testHistories = mockHistoryRepository.FindAll());
-
-           //Assert.IsNotNull(testHistories); // Test if null
-           // Assert.AreEqual(1, testHistories.Count); // Verify the correct Number
+           Assert.IsNotNull(testHistories); // Test if null
+           Assert.AreEqual(3, testHistories.Count); // Verify the correct Number
         }
 
     }

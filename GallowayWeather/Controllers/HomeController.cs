@@ -35,8 +35,8 @@ namespace GallowayWeather.Controllers
                 WeatherResults = new List<WeatherHistory>()
             };
 
-            SimpleLocation currLocation = await db.GetLocationAsync(lstResults);
-            SimpleCondition currCondition = await db.GetCurrentAsync(lstResults);
+            ExtendedLocation currLocation = await db.GetLocationAsync(lstResults);
+            ExtendedCondition currCondition = await db.GetCurrentAsync(lstResults);
 
             WeatherHistory weatherHistory = new WeatherHistory()
             {

@@ -16,8 +16,8 @@ namespace GallowayWeather.Core.Interfaces
         void Remove(int Id);
         IList <WeatherHistory> GetWeatherHistory();
         WeatherHistory FindById(int Id);
-        Task<SimpleCondition> GetCurrentAsync(string locationId);
-        Task<SimpleLocation> GetLocationAsync(string locationId);
+        Task<ExtendedCondition> GetCurrentAsync(string locationId);
+        Task<ExtendedLocation> GetLocationAsync(string locationId);
         Task<IList<SimpleAutoComplete>> GetAutoCompleteAsync(string searchString);
     }
 }
