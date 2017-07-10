@@ -13,7 +13,7 @@
     @using (Html.BeginForm())
     {
         <div class="form-group">
-            <label for="searchtext">Criteria:</label><input id="searchtext" type="text" size="50" class="form-control" /><img id='spinner' name='spiner' src='~/images/gears.gif' height="20" width="20" />
+            <label for="searchtext">Criteria:</label><input id="searchtext" type="text" size="50" class="form-control" />
         </div>
         <div class="form-group">
             <label for="lstResults">Results:</label>@Html.DropDownList("lstResults", new List<SelectListItem>{

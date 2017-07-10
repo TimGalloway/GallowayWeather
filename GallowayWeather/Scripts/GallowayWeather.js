@@ -7,7 +7,7 @@
 
 function getAutoCompleteValues(val) {
     if (val.length < 3) return false;
-    $("#spinner").show();
+    $("#searchtext").addClass("loading");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -19,12 +19,12 @@ function getAutoCompleteValues(val) {
             $.each(data, function (i, item) {
                 $("#lstResults").append('<option value="' + item.Key + '">' + item.LocalizedName + ', ' + item.Country.LocalizedName + '</option>');
             });
-            $("#spinner").hide();
+            $("#searchtext").removeClass("loading");
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status);
             alert(thrownError);
-            $("#spinner").hide();
+            $("#searchtext").removeClass("loading");
         }
     });
 }
