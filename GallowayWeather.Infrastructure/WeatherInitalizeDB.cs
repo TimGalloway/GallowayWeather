@@ -1,5 +1,6 @@
 ﻿using GallowayWeather.Core.Models;
 using System.Data.Entity;
+using System;
 
 namespace GallowayWeather.Infrastructure
 {
@@ -7,7 +8,16 @@ namespace GallowayWeather.Infrastructure
     {
         protected override void Seed(WeatherContext context)
         {
-            context.WeatherHistorys.Add(new WeatherHistory { Location = "Perth", Icon = "1", Temp = "20", Text = "Sunny" });
+            context.WeatherHistorys.Add(new WeatherHistory
+            {
+                Location = "22889",
+                LocationText = "Sydney",
+                Icon = "01",
+                Temp = "20C",
+                Text = "Sunny",
+                DateCreated = DateTime.Now,
+                LocalObservationDateTime = "01/02/2017 12:00PM"
+            });
         }
     }
 }
