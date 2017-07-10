@@ -34,5 +34,10 @@
             public string MobileLink { get; set; }
             public string Link { get; set; }
         }
+
+        public class ExtendedCondition : SimpleCondition
+        {
+            public string ConditionID { get; set; }
+        }
     }
 }
