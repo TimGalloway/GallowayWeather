@@ -90,5 +90,10 @@ namespace GallowayWeather.Core.Models
             public List<SupplementalAdminArea> SupplementalAdminAreas { get; set; }
             public List<object> DataSets { get; set; }
         }
+
+        public class ExtendedLocation: SimpleLocation
+        {
+            public string LocationID { get; set; }
+        }
     }
 }

@@ -12,18 +12,20 @@
     <h1>GallowayWeather</h1>
     @using (Html.BeginForm())
     {
-        <fieldset>
-            Criteria: <input id="searchtext" type="text" size="50" /><img id='spinner' name='spiner' src='~/images/gears.gif' height="20" width="20" /><br />
-
-            Results: @Html.DropDownList("lstResults", new List<SelectListItem>{
-                    new SelectListItem{ Text="Perth", Value = "26797" }}
-                    )<br />
-            Temp Unit: @Html.DropDownList("lstUnitType", new List<SelectListItem>{
-                        new SelectListItem{ Text="Metric", Value="Metric" },
-                        new SelectListItem{Text="Imperial", Value="Imperial"}
-                    })<br />
-            <input id="btnGetWeather" type="submit" value="Get Weather" />
-        </fieldset>
+        <div class="form-group">
+            <label for="searchtext">Criteria:</label><input id="searchtext" type="text" size="50" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="lstResults">Results:</label>@Html.DropDownList("lstResults", new List<SelectListItem>{
+                    new SelectListItem{ Text="Perth", Value = "26797" }}, new { @class = "form-control" }
+                    )
+        </div>
+        <div class="form-group">
+            <label for="lstUnitType">Temp Unit:</label>
+            Metric: @Html.RadioButton("lstUnitType", "Metric")
+            Imperial: @Html.RadioButton("lstUnitType", "Imperial")            
+       </div>
+    <input id="btnGetWeather" type="submit" value="Get Weather" class="btn btn-default" />
     }
     <br />
     <ul>
