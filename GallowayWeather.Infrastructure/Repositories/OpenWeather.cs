@@ -1,11 +1,9 @@
 ﻿using GallowayWeather.Core.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using GallowayWeather.Core.Models.OpenWeatherMap;
 using GallowayWeather.Core.Models.AccuWeather;
+using GallowayWeather.Core.Models;
 
 namespace GallowayWeather.Infrastructure.Repositories
 {
@@ -23,7 +21,7 @@ namespace GallowayWeather.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Condition.ExtendedCondition> GetCurrentAsync(string locationId)
+        public Task<CommonCondition> GetCurrentAsync(string locationId)
         {
             throw new NotImplementedException();
         }

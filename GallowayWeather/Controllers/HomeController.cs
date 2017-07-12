@@ -54,25 +54,25 @@ namespace GallowayWeather.Controllers
             IWeatherRepository wr = (IWeatherRepository)Activator.CreateInstance(t);
 
             ExtendedLocation currLocation = await wr.GetLocationAsync(lstResults);
-            ExtendedCondition currCondition = await wr.GetCurrentAsync(lstResults);
+            CommonCondition currCondition = await wr.GetCurrentAsync(lstResults);
 
             WeatherHistory weatherHistory = new WeatherHistory()
             {
                 DateCreated = DateTime.Now,
-                Icon = currCondition.WeatherIcon.ToString("00"),
+                Icon = currCondition.Icon,
                 Location = lstResults,
-                Text = currCondition.WeatherText,
+                Text = currCondition.Text,
                 LocationText = currLocation.EnglishName + ", " + currLocation.Country.EnglishName,
                 LocalObservationDateTime = currCondition.LocalObservationDateTime
             };
 
             if (lstUnitType == "Metric")
             {
-                weatherHistory.Temp = currCondition.Temperature.Metric.Value.ToString() + currCondition.Temperature.Metric.Unit;
+                weatherHistory.Temp = currCondition.TempC.ToString() + currCondition.TempUnitC;
             }
             else
             {
-                weatherHistory.Temp = currCondition.Temperature.Imperial.Value.ToString() + currCondition.Temperature.Imperial.Unit;
+                weatherHistory.Temp = currCondition.TempF.ToString() + currCondition.TempF;
             }
 
             db.Add(weatherHistory);

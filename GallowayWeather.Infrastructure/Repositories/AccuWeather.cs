@@ -1,7 +1,6 @@
 ﻿using GallowayWeather.Core.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GallowayWeather.Core.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -33,7 +32,7 @@ namespace GallowayWeather.Infrastructure.Repositories
             return rootObject;
         }
 
-        public async Task<ExtendedCondition> GetCurrentAsync(string locationId)
+        public async Task<CommonCondition> GetCurrentAsync(string locationId)
         {
             var url = "http://dataservice.accuweather.com/currentconditions/v1/" + locationId + "?apikey=" + ConfigurationManager.AppSettings["apiKey"]; 
             List<ExtendedCondition> rootObject = new List<ExtendedCondition>();
@@ -46,7 +45,16 @@ namespace GallowayWeather.Infrastructure.Repositories
             ExtendedCondition currConditions = rootObject[0];
             currConditions.ConditionID = locationId;
 
-            return currConditions;
+            CommonCondition commonCondition = new CommonCondition();
+
+            commonCondition.Icon = currConditions.WeatherIcon.ToString();
+            commonCondition.TempC = currConditions.Temperature.Metric.Value.ToString();
+            commonCondition.TempF = currConditions.Temperature.Imperial.Value.ToString();
+            commonCondition.Text = currConditions.WeatherText;
+            commonCondition.TempUnitC = currConditions.Temperature.Metric.Unit;
+            commonCondition.TempUnitF = currConditions.Temperature.Imperial.Unit;
+
+            return commonCondition;
         }
 
         public async Task<Location.ExtendedLocation> GetLocationAsync(string locationId)

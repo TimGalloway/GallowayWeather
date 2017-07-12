@@ -48,6 +48,7 @@
     <Compile Include="Models\AccuWeather\CurrentConditionDetailed.cs" />
     <Compile Include="Models\AccuWeather\Condition.cs" />
     <Compile Include="Models\AccuWeather\Location.cs" />
+    <Compile Include="Models\CommonCondition.cs" />
     <Compile Include="Models\OpenWeatherMap\Weather.cs" />
     <Compile Include="Models\WeatherHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
