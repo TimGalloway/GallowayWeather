@@ -13,6 +13,15 @@
     @using (Html.BeginForm())
     {
         <div class="form-group">
+            @foreach (var type in Model.WeatherTypes)
+            {
+            <div>
+                @Html.RadioButton("lstWeatherType", type.ID )
+                @Html.Label(type.Type)
+            </div>
+            }
+        </div>
+        <div class="form-group">
             <label for="searchtext">Criteria:</label><input id="searchtext" type="text" size="50" class="form-control" />
         </div>
         <div class="form-group">

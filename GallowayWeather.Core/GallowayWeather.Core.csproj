@@ -42,11 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IWeatherHistoryRepository.cs" />
-    <Compile Include="Models\AutoComplete.cs" />
+    <Compile Include="Interfaces\IWeatherRepository.cs" />
+    <Compile Include="Models\AccuWeather\AutoComplete.cs" />
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\CurrentConditionDetailed.cs" />
-    <Compile Include="Models\Condition.cs" />
-    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\AccuWeather\CurrentConditionDetailed.cs" />
+    <Compile Include="Models\AccuWeather\Condition.cs" />
+    <Compile Include="Models\AccuWeather\Location.cs" />
+    <Compile Include="Models\OpenWeatherMap\Weather.cs" />
     <Compile Include="Models\WeatherHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

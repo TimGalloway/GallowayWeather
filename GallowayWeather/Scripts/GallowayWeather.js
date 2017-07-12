@@ -1,18 +1,18 @@
 ﻿jQuery(document).ready(function ($) {
     $("#spinner").hide();
     $("#searchtext").keyup(function () {
-        getAutoCompleteValues($("#searchtext").val());
+        getAutoCompleteValues($("#searchtext").val(), "AccuWeather");
     });
 });
 
-function getAutoCompleteValues(val) {
+function getAutoCompleteValues(val, weatherType) {
     if (val.length < 3) return false;
     $("#searchtext").addClass("loading");
     $.ajax({
         type: "GET",
         dataType: "json",
         jsonpCallback: "callback",
-        url: "/home/AutoCompleteAsync?searchText=" + val,
+        url: "/home/AutoCompleteAsync?weatherType=" + weatherType + "&searchText=" + val,
         cache: false,
         success: function (data) {
             $("#lstResults").html('');

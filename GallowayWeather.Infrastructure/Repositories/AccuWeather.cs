@@ -5,42 +5,18 @@ using System.Linq;
 using GallowayWeather.Core.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
-using static GallowayWeather.Core.Models.Condition;
+using static GallowayWeather.Core.Models.AccuWeather.Condition;
 using System.Threading.Tasks;
-using static GallowayWeather.Core.Models.Location;
+using static GallowayWeather.Core.Models.AccuWeather.Location;
 using System.Configuration;
-using static GallowayWeather.Core.Models.AutoComplete;
+using static GallowayWeather.Core.Models.AccuWeather.AutoComplete;
+using GallowayWeather.Core.Models.AccuWeather;
 
-namespace GallowayWeather.Infrastructure
+namespace GallowayWeather.Infrastructure.Repositories
 {
-    public class GallowayWeatherRepository: IWeatherHistoryRepository
+    public class AccuWeather: IWeatherRepository
     {
-        WeatherContext context = new WeatherContext();
-
-        public Boolean Add(WeatherHistory h)
-        {
-            context.WeatherHistorys.Add(h);
-            context.SaveChanges();
-
-            return true;
-        }
-
         public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Edit(WeatherHistory h)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<WeatherHistory> FindAll()
-        {
-            return context.WeatherHistorys.ToList();
-        }
-
-        public WeatherHistory FindById(int Id)
         {
             throw new NotImplementedException();
         }
@@ -89,14 +65,5 @@ namespace GallowayWeather.Infrastructure
             return currLocations;
         }
 
-        public IList<WeatherHistory> GetWeatherHistory()
-        {
-            return context.WeatherHistorys.ToList();
-        }
-
-        public void Remove(int Id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
