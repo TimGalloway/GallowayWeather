@@ -63,7 +63,8 @@ namespace GallowayWeather.Controllers
                 Location = lstResults,
                 Text = currCondition.Text,
                 LocationText = currLocation.EnglishName + ", " + currLocation.Country.EnglishName,
-                LocalObservationDateTime = currCondition.LocalObservationDateTime
+                LocalObservationDateTime = currCondition.LocalObservationDateTime,
+                Type = currCondition.Type
             };
 
             if (lstUnitType == "Metric")
@@ -72,7 +73,7 @@ namespace GallowayWeather.Controllers
             }
             else
             {
-                weatherHistory.Temp = currCondition.TempF.ToString() + currCondition.TempF;
+                weatherHistory.Temp = currCondition.TempF.ToString() + currCondition.TempUnitF;
             }
 
             db.Add(weatherHistory);

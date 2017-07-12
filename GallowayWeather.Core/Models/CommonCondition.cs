@@ -2,6 +2,7 @@
 {
     public class CommonCondition
     {
+        public string Type { get; set; }
         public string Location { get; set; }
         public string LocationText { get; set; }
         public string TempUnitC { get; set; }

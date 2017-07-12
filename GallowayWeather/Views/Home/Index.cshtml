@@ -13,6 +13,7 @@
     @using (Html.BeginForm())
     {
         <div class="form-group">
+            <label for="searchtext">Data Source:</label>
             @foreach (var type in Model.WeatherTypes)
             {
             <div>
@@ -43,7 +44,7 @@
         <li>
             @item.LocalObservationDateTime<br />
             @item.LocationText<br />
-            <img src=/Images/Icons/@item.Icon-s.png /><br />
+            <img src=/Images/Icons/@item.Type/@item.Icon-s.png /><br />
             @item.Text<br />
             @item.Temp<br />
             @item.DateCreated<br />

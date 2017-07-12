@@ -47,13 +47,14 @@ namespace GallowayWeather.Infrastructure.Repositories
 
             CommonCondition commonCondition = new CommonCondition();
 
+            commonCondition.Type = "AccuWeather";
             commonCondition.Icon = currConditions.WeatherIcon.ToString();
             commonCondition.TempC = currConditions.Temperature.Metric.Value.ToString();
             commonCondition.TempF = currConditions.Temperature.Imperial.Value.ToString();
             commonCondition.Text = currConditions.WeatherText;
             commonCondition.TempUnitC = currConditions.Temperature.Metric.Unit;
             commonCondition.TempUnitF = currConditions.Temperature.Imperial.Unit;
-
+            commonCondition.LocalObservationDateTime = currConditions.LocalObservationDateTime;
             return commonCondition;
         }
 

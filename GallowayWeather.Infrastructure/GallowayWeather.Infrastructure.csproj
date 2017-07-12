@@ -54,6 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201707121308191_AddWeatherHistoryType.cs" />
+    <Compile Include="Migrations\201707121308191_AddWeatherHistoryType.Designer.cs">
+      <DependentUpon>201707121308191_AddWeatherHistoryType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\AccuWeather.cs" />
     <Compile Include="Migrations\201706290845392_Initial.cs" />
     <Compile Include="Migrations\201706290845392_Initial.Designer.cs">
@@ -93,6 +97,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707080046286_AddLocalTime.resx">
       <DependentUpon>201707080046286_AddLocalTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707121308191_AddWeatherHistoryType.resx">
+      <DependentUpon>201707121308191_AddWeatherHistoryType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
