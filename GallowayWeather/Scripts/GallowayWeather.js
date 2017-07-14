@@ -1,18 +1,42 @@
 ﻿jQuery(document).ready(function ($) {
-    $("#spinner").hide();
+    $('input[type=radio][name=lstWeatherType]').on('change', function () {
+        switch ($(this).val()) {
+            case 'AccuWeather':
+                $("#divResults").show();
+                break;
+            case 'OpenWeather':
+                $("#divResults").hide();
+                break;
+        }
+    });
+    switch ($('input[type=radio][name=lstWeatherType]')) {
+        case 'AccuWeather':
+            alert($(this).val());
+                $("#divResults").show();
+                break;
+        case 'OpenWeather':
+            alert($(this).val());
+                $("#divResults").hide();
+                break;
+        }
+    
+
+
     $("#searchtext").keyup(function () {
-        getAutoCompleteValues($("#searchtext").val());
+        if ($("#lstWeatherType:checked").val() == "AccuWeather") {
+            getAutoCompleteValues($("#searchtext").val(), "AccuWeather");
+        }
     });
 });
 
-function getAutoCompleteValues(val) {
+function getAutoCompleteValues(val, weatherType) {
     if (val.length < 3) return false;
     $("#searchtext").addClass("loading");
     $.ajax({
         type: "GET",
         dataType: "json",
         jsonpCallback: "callback",
-        url: "/home/AutoCompleteAsync?searchText=" + val,
+        url: "/home/AutoCompleteAsync?weatherType=" + weatherType + "&searchText=" + val,
         cache: false,
         success: function (data) {
             $("#lstResults").html('');
