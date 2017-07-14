@@ -13,9 +13,19 @@
     @using (Html.BeginForm())
     {
         <div class="form-group">
-            <label for="searchtext">Criteria:</label><input id="searchtext" type="text" size="50" class="form-control" />
+            <label for="searchtext">Data Source:</label>
+            @foreach (var type in Model.WeatherTypes)
+            {
+            <div>
+                @Html.RadioButton("lstWeatherType", type.ID )
+                @Html.Label(type.Type)
+            </div>
+            }
         </div>
         <div class="form-group">
+            <label for="searchtext">Criteria:</label>@Html.TextBox("searchtext", "", new { @class = "form-control" })
+        </div>
+        <div class="form-group" id="divResults">
             <label for="lstResults">Results:</label>@Html.DropDownList("lstResults", new List<SelectListItem>{
                     new SelectListItem{ Text="Perth", Value = "26797" }}, new { @class = "form-control" }
                     )
@@ -34,7 +44,7 @@
         <li>
             @item.LocalObservationDateTime<br />
             @item.LocationText<br />
-            <img src=/Images/Icons/@item.Icon-s.png /><br />
+            <img src=@item.Icon /><br />
             @item.Text<br />
             @item.Temp<br />
             @item.DateCreated<br />

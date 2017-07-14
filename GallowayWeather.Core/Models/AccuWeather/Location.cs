@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GallowayWeather.Core.Models
+namespace GallowayWeather.Core.Models.AccuWeather
 {
     public class Location
     {

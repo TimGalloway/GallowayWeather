@@ -1,0 +1,4 @@
+﻿  <connectionStrings>
+    <!--<add name="WeatherContext" connectionString="Server=localhost;Database=GallowayWeather;User Id=dbdev;Password=dbdev;" providerName="System.Data.SqlClient" />-->
+    <add name="WeatherContext" connectionString="Server=localhost\SQLEXPRESS;Database=GallowayWeather;User Id=dbdev;Password=dbdev;" providerName="System.Data.SqlClient" />
+  </connectionStrings>
