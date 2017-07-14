@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using static GallowayWeather.Core.Models.AccuWeather.Location;
 using System.Configuration;
 using static GallowayWeather.Core.Models.AccuWeather.AutoComplete;
-using GallowayWeather.Core.Models.AccuWeather;
 
 namespace GallowayWeather.Infrastructure.Repositories
 {
@@ -22,7 +21,7 @@ namespace GallowayWeather.Infrastructure.Repositories
 
         public async Task<IList<SimpleAutoComplete>> GetAutoCompleteAsync(string searchString)
         {
-            var url = "http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" + ConfigurationManager.AppSettings["apiKey"] + "&q=" + searchString;
+            var url = "http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" + ConfigurationManager.AppSettings["AccuWeatherapiKey"] + "&q=" + searchString;
             List<SimpleAutoComplete> rootObject = new List<SimpleAutoComplete>();
             using (var httpClient = new HttpClient())
             {
@@ -32,9 +31,9 @@ namespace GallowayWeather.Infrastructure.Repositories
             return rootObject;
         }
 
-        public async Task<CommonCondition> GetCurrentAsync(string locationId)
+        public async Task<CommonCondition> GetCurrentAsync(string locationId, string searchtext, string tempUnit)
         {
-            var url = "http://dataservice.accuweather.com/currentconditions/v1/" + locationId + "?apikey=" + ConfigurationManager.AppSettings["apiKey"]; 
+            var url = "http://dataservice.accuweather.com/currentconditions/v1/" + locationId + "?apikey=" + ConfigurationManager.AppSettings["AccuWeatherapiKey"]; 
             List<ExtendedCondition> rootObject = new List<ExtendedCondition>();
             using (var httpClient = new HttpClient())
             {
@@ -46,21 +45,27 @@ namespace GallowayWeather.Infrastructure.Repositories
             currConditions.ConditionID = locationId;
 
             CommonCondition commonCondition = new CommonCondition();
-
+            commonCondition.locationId = Convert.ToInt32(currConditions.ConditionID);
             commonCondition.Type = "AccuWeather";
-            commonCondition.Icon = currConditions.WeatherIcon.ToString();
-            commonCondition.TempC = currConditions.Temperature.Metric.Value.ToString();
-            commonCondition.TempF = currConditions.Temperature.Imperial.Value.ToString();
+            commonCondition.Icon = "/Images/Icons/" + commonCondition.Type  + "/" + currConditions.WeatherIcon.ToString("D2") + "-s.png";
+            if (tempUnit == "Metric")
+            {
+                commonCondition.Temp = currConditions.Temperature.Metric.Value.ToString();
+                commonCondition.TempUnit = currConditions.Temperature.Metric.Unit;
+            }
+            else
+            {
+                commonCondition.Temp = currConditions.Temperature.Imperial.Value.ToString();
+                commonCondition.TempUnit = currConditions.Temperature.Imperial.Unit;
+            }
             commonCondition.Text = currConditions.WeatherText;
-            commonCondition.TempUnitC = currConditions.Temperature.Metric.Unit;
-            commonCondition.TempUnitF = currConditions.Temperature.Imperial.Unit;
             commonCondition.LocalObservationDateTime = currConditions.LocalObservationDateTime;
             return commonCondition;
         }
 
-        public async Task<Location.ExtendedLocation> GetLocationAsync(string locationId)
+        public async Task<CommonLocation> GetLocationAsync(string locationId, string searchtext)
         {
-            var url = "http://dataservice.accuweather.com/locations/v1/" + locationId + "?apikey=" + ConfigurationManager.AppSettings["apiKey"];
+            var url = "http://dataservice.accuweather.com/locations/v1/" + locationId + "?apikey=" + ConfigurationManager.AppSettings["AccuWeatherapiKey"];
             ExtendedLocation rootObject = new ExtendedLocation();
             using (var httpClient = new HttpClient())
             {
@@ -71,7 +76,10 @@ namespace GallowayWeather.Infrastructure.Repositories
             ExtendedLocation currLocations = rootObject;
             currLocations.LocationID = locationId;
 
-            return currLocations;
+            CommonLocation commonLocation = new CommonLocation();
+            commonLocation.EnglishName = currLocations.EnglishName + ", " + currLocations.Country.EnglishName;
+
+            return commonLocation;
         }
 
     }

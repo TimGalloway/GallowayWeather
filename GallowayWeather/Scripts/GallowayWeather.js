@@ -1,7 +1,31 @@
 ﻿jQuery(document).ready(function ($) {
-    $("#spinner").hide();
+    $('input[type=radio][name=lstWeatherType]').on('change', function () {
+        switch ($(this).val()) {
+            case 'AccuWeather':
+                $("#divResults").show();
+                break;
+            case 'OpenWeather':
+                $("#divResults").hide();
+                break;
+        }
+    });
+    switch ($('input[type=radio][name=lstWeatherType]')) {
+        case 'AccuWeather':
+            alert($(this).val());
+                $("#divResults").show();
+                break;
+        case 'OpenWeather':
+            alert($(this).val());
+                $("#divResults").hide();
+                break;
+        }
+    
+
+
     $("#searchtext").keyup(function () {
-        getAutoCompleteValues($("#searchtext").val(), "AccuWeather");
+        if ($("#lstWeatherType:checked").val() == "AccuWeather") {
+            getAutoCompleteValues($("#searchtext").val(), "AccuWeather");
+        }
     });
 });
 

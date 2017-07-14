@@ -46,7 +46,7 @@ namespace GallowayWeather.Core.Models.OpenWeatherMap
         public int sunset { get; set; }
     }
 
-    public class RootObject
+    public class CurrentWeather
     {
         public Coord coord { get; set; }
         public List<Weather> weather { get; set; }
