@@ -1,16 +1,10 @@
 ﻿using GallowayWeather.Core.Interfaces;
 using GallowayWeather.Core.Models;
-using GallowayWeather.Core.Models.AccuWeather;
-using GallowayWeather.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static GallowayWeather.Core.Models.AccuWeather.Condition;
-using static GallowayWeather.Core.Models.AccuWeather.Location;
 
 namespace GallowayWeather.Tests
 {
@@ -19,83 +13,35 @@ namespace GallowayWeather.Tests
     {
         public WeatherRepositoryTest()
         {
-            Condition.ExtendedCondition condition = new Condition.ExtendedCondition()
+            CommonCondition commonConditionAccuWeather = new CommonCondition()
             {
-                ConditionID = "1",
-                    LocalObservationDateTime = DateTime.Now.ToString(),
-                    EpochTime = 333,
-                    WeatherText = "Testing Sunny",
-                    WeatherIcon = 22,
-                    IsDayTime = true,
-                    Temperature = new Condition.Temperature()
-                    {
-                        Metric = new Condition.Metric() { Value = 10 },
-                        Imperial = new Condition.Imperial() { Value = 4 }
-                    },
-                    MobileLink = "123",
-                    Link = "ABC"
+                locationId = 1,
+                Type = "AccuWeather",
+                Icon = "33",
+                Location = "99",
+                LocationText = "TestLocation",
+                Temp = "3",
+                Text = "Sunny",
+                LocalObservationDateTime = "10/02/2017 12:00pm",
+                TempUnit ="C"
             };
-            Location.ExtendedLocation location = new Location.ExtendedLocation()
+
+            CommonCondition commonConditionOpenWeather = new CommonCondition()
             {
-                LocationID = "100",
-                Version = 1,
-                Key = "1",
-                Type = "A",
-                Rank = 10,
-                LocalizedName = "TestPlace",
-                EnglishName = "Test Place",
-                PrimaryPostalCode = "0000",
-                Region = new Location.Region()
-                {
-                    EnglishName = "Test Region",
-                    ID = "1",
-                    LocalizedName = "Test Region"
-                },
-                Country = new Location.Country()
-                {
-                    EnglishName = "Test Country",
-                    LocalizedName = "Test Country",
-                    ID = "1"
-                },
-                AdministrativeArea = new Location.AdministrativeArea()
-                {
-                    ID = "1",
-                    LocalizedName = "Test Area",
-                    EnglishName = "Test Area",
-                    Level = 1,
-                    LocalizedType = "Country",
-                    EnglishType = "Country",
-                    CountryID = "1"
-                },
-                TimeZone = new Location.TimeZone()
-                {
-                    Code = "A",
-                    Name = "A",
-                    GmtOffset = 8,
-                    IsDaylightSaving = true
-                },
-                GeoPosition = new Location.GeoPosition()
-                {
-                    Latitude = 10,
-                    Longitude = 30,
-                    Elevation = new Location.Elevation()
-                    {
-                        Metric = new Location.Metric()
-                        {
-                            Value = 10
-                        },
-                        Imperial = new Location.Imperial()
-                        {
-                            Value = 5
-                        }
-                    }
-                },
-                IsAlias = false,
-                SupplementalAdminAreas = new List<Location.SupplementalAdminArea>()
-                {
-                    new Location.SupplementalAdminArea(){Level = 1, EnglishName = "Test", LocalizedName = "Test"},
-                    new Location.SupplementalAdminArea(){Level = 2, EnglishName = "Test2", LocalizedName = "Test2"}
-                }
+                locationId = 1,
+                Type = "OpenWeather",
+                Icon = "33",
+                Location = "99",
+                LocationText = "TestLocation",
+                Temp = "3",
+                Text = "Sunny",
+                LocalObservationDateTime = "10/02/2017 12:00pm",
+                TempUnit = "C"
+            };
+
+            CommonLocation commonLocation = new CommonLocation()
+            {
+                 EnglishName = "Test Place"
             };
             IList<WeatherHistory> weatherHistories = new List<WeatherHistory>()
             {
@@ -130,38 +76,45 @@ namespace GallowayWeather.Tests
                     ID=12
                 }
             };
+
             Mock<IWeatherHistoryRepository> mockHistoryRepository = new Mock<IWeatherHistoryRepository>();
+            Mock<IWeatherRepository> mockRepository = new Mock<IWeatherRepository>();
+
             mockHistoryRepository.Setup(mr => mr.FindAll()).Returns(weatherHistories);
-            //mockHistoryRepository.Setup(mr => mr.GetCurrentAsync("1")).Returns(Task.FromResult(condition));
-            //mockHistoryRepository.Setup(mr => mr.GetLocationAsync("100")).Returns(Task.FromResult(location));
+
+            mockRepository.Setup(mr => mr.GetCurrentAsync("1", "perth", "C")).Returns(Task.FromResult(commonConditionAccuWeather));
+            mockRepository.Setup(mr => mr.GetLocationAsync("1", "perth")).Returns(Task.FromResult(commonLocation));
+
             this.MockWeatherRepository = mockHistoryRepository.Object;
+            this.MockRepository = mockRepository.Object;
         }
 
         public TestContext TestContext { get; set; }
         public readonly IWeatherHistoryRepository MockWeatherRepository;
+        public readonly IWeatherRepository MockRepository;
 
-        //[TestMethod]
-        //public async Task CanGetConditionsAsync()
-        //{
-        //    Condition.ExtendedCondition testCondition = await MockWeatherRepository.GetCurrentAsync("1");
+        [TestMethod]
+        public async Task CanGetConditionsAsync()
+        {
+            CommonCondition testCondition = await MockRepository.GetCurrentAsync("1","perth","C");
 
-        //    Assert.IsNotNull(testCondition);
-        //    Assert.IsInstanceOfType(testCondition, typeof(ExtendedCondition));
-        //    Assert.AreEqual("ABC", testCondition.Link);
-        //}
+            Assert.IsNotNull(testCondition);
+            Assert.IsInstanceOfType(testCondition, typeof(CommonCondition));
+            Assert.AreEqual("TestLocation", testCondition.LocationText);
+        }
 
-        //[TestMethod]
-        //public async Task CanGetLocation()
-        //{
-        //    Location.SimpleLocation testLocation = await MockWeatherRepository.GetLocationAsync("100");
+        [TestMethod]
+        public async Task CanGetLocation()
+        {
+            CommonLocation testLocation = await MockRepository.GetLocationAsync("1","perth");
 
-        //    Assert.IsNotNull(testLocation);
-        //    Assert.IsInstanceOfType(testLocation, typeof(ExtendedLocation));
-        //    Assert.AreEqual("Test Place", testLocation.EnglishName);
-        //}
+            Assert.IsNotNull(testLocation);
+            Assert.IsInstanceOfType(testLocation, typeof(CommonLocation));
+            Assert.AreEqual("Test Place", testLocation.EnglishName);
+        }
 
         ///<summary>
-        /// Can we return all products?
+        /// 
         ///</summary>
         [TestMethod]
         public void CanReturnAllWeatherHistorys()
